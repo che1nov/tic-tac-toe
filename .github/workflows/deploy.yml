@@ -18,10 +18,6 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: frontend
-
       - name: Copy files to gh-pages branch
         run: |
           git config --global user.name "GitHub Actions"
