@@ -1,6 +1,7 @@
 name: Deploy to GitHub Pages
 
 on:
+  # Запускать workflow при push в ветку main
   push:
     branches:
       - main
@@ -10,24 +11,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Шаг 1: Checkout кода
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Шаг 2: Настроить Node.js (если нужно)
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
+      # Шаг 3: Установить зависимости (если есть package.json)
+      - name: Install dependencies
+        run: npm install
+        working-directory: frontend
+
+      # Шаг 4: Скопировать файлы из frontend в gh-pages
       - name: Copy files to gh-pages branch
         run: |
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
           mkdir -p dist
           cp -r frontend/* dist/
           cd dist
           git init
           git checkout --orphan gh-pages
           git add .
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
           git commit -m "Deploy to GitHub Pages"
-          git remote add origin https://github.com/che1nov/your-repo-name.git
-          git push -f origin gh-pages
+
+          # Настройка remote с использованием GITHUB_TOKEN
+          git remote add origin https://github.com/che1nov/tic-tac-toe.git
+          git push -f https://${{ secrets.GITHUB_TOKEN }}@github.com/che1nov/tic-tac-toe.git gh-pages
