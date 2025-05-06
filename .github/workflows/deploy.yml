@@ -15,17 +15,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # Шаг 2: Настроить Node.js (если нужно)
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
-
-      # Шаг 3: Установить зависимости (если есть package.json)
-      - name: Install dependencies
-        run: npm install
-        working-directory: frontend
-
       # Шаг 4: Скопировать файлы из frontend в gh-pages
       - name: Copy files to gh-pages branch
         run: |
